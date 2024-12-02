@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { redHatDisplay } from "./theme/fonts";
+import { poppins } from "./theme/fonts";
 import "./globals.css";
 import {
   Pane,
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${redHatDisplay.className} antialiased`}>
+      <body className={`${poppins.className} antialiased`}>
         <Header />
         <PaneContainer>
           <Pane side="left">

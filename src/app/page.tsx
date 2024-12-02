@@ -7,15 +7,12 @@ export default function About() {
   return (
     <>
       <h1>Welcome!</h1>
-      <br />
       <StyledParagraph>
         {`My name is Andrew Dauphinais, but you can call me Andy. I've been programming since 2019 and have been working professionally as a full-stack software engineer since early 2021.`}
       </StyledParagraph>
-      <br />
       <StyledParagraph>
         {`My tech journey was unorthodox but fueled by a passion for software design. My Bachelor’s degree is in music and sound recording, which I still do as a hobby. I went from making music for games to making games. I then moved onto Konverse, a fast-paced startup with a 4-person development team.`}
       </StyledParagraph>
-      <br />
       <StyledParagraph>
         {`Feel free to peruse my website. You can read about my work experience and check out what I'm currently building in my spare time, like `}
         <StyledLink href="https://windycivi.com/" target="_blank">
@@ -27,7 +24,6 @@ export default function About() {
         </StyledLink>
         {`!`}
       </StyledParagraph>
-      <br />
       {links.map((link) => (
         <StyledSocialLink href={link.href} target="_blank" key={link.name}>
           <FontAwesomeIcon icon={link.icon} height="2rem" />
@@ -40,6 +36,7 @@ export default function About() {
 
 const StyledParagraph = styled.p`
   font-size: 1rem;
+  margin-top: 1.2rem;
 `;
 
 const StyledLink = styled.a`
@@ -52,5 +49,5 @@ const StyledSocialLink = styled(StyledLink)`
   font-size: 1.5rem;
   align-items: center;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
 `;
