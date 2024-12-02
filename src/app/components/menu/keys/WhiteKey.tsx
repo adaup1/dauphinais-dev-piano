@@ -32,24 +32,26 @@ export const WhiteKey = ({
   }, []);
 
   return (
-    <StyledContainer
-      isTopKey={isTopKey}
-      isActive={isActive}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <Link href={href}>{name}</Link>
-      {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
-    </StyledContainer>
+    <StyledLink href={href}>
+      <StyledContainer
+        isTopKey={isTopKey}
+        isActive={isActive}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <StyledLinkText isActive={isActive}>{name}</StyledLinkText>
+        {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
+      </StyledContainer>
+    </StyledLink>
   );
 };
 
-interface StyledContainerProps {
+interface ExtraProps {
   isTopKey?: boolean;
   isActive?: boolean;
 }
 
-const StyledContainer = styled.div<StyledContainerProps>`
+const StyledContainer = styled.div<ExtraProps>`
   width: 100%;
   height: 5rem;
   border-top: ${({ isTopKey }) =>
@@ -71,13 +73,6 @@ const StyledContainer = styled.div<StyledContainerProps>`
   font-family: ${() => carattere.style.fontFamily};
   cursor: pointer;
 
-  & > a {
-    color: ${theme.white};
-    text-decoration: none;
-    filter: ${({ isActive }) =>
-      isActive ? `drop-shadow(0 0.1rem 1rem ${theme.white})` : "none"};
-  }
-
   &:hover {
     background: linear-gradient(
       90deg,
@@ -85,4 +80,15 @@ const StyledContainer = styled.div<StyledContainerProps>`
       ${theme.green} 100%
     );
   }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
+
+const StyledLinkText = styled.div<ExtraProps>`
+  color: ${theme.white};
+  filter: ${({ isActive }) =>
+    isActive ? `drop-shadow(0 0.1rem 1rem ${theme.white})` : "none"};
 `;
