@@ -1,5 +1,5 @@
 import { styled } from "next-yak";
-import { carattere } from "../../theme/fonts";
+import { carattere, poppins } from "../../theme/fonts";
 import { theme } from "@/app/theme/theme";
 
 export const Header = () => {
@@ -38,5 +38,6 @@ const StyledTextContainer = styled.div`
 `;
 
 const StyledSubHeading = styled.div`
-  font-size: 2rem;
+  font-size: 1.5rem;
+  font-family: ${() => poppins.style.fontFamily};
 `;
