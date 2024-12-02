@@ -1,30 +1,40 @@
 import { styled } from "next-yak";
 import { carattere } from "../../theme/fonts";
+import { theme } from "@/app/theme/theme";
 
 export const Header = () => {
   return (
     <StyledContainer>
-      <div>Andrew Dauphinais</div>
-      <StyledSubHeading>Software Engineer</StyledSubHeading>
+      <StyledTextContainer>
+        <div>Andrew Dauphinais</div>
+        <StyledSubHeading>Software Engineer</StyledSubHeading>
+      </StyledTextContainer>
     </StyledContainer>
   );
 };
 
 const StyledContainer = styled.div`
   width: 100%;
-  padding: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+  margin-bottom: -2rem;
   font-size: 4rem;
   font-family: ${() => carattere.style.fontFamily};
+
+  background: linear-gradient(
+    180deg,
+    ${theme.veryDarkGreen} 20%,
+    ${theme.veryDarkGreen} 60%,
+    transparent 100%
+  );
+`;
+
+const StyledTextContainer = styled.div`
+  /* filter: drop-shadow(0 0 0.2rem ${theme.white}); */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    0deg,
-    transparent 0%,
-    #0c2418 50%,
-    transparent 100%
-  );
 `;
 
 const StyledSubHeading = styled.div`

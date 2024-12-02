@@ -7,15 +7,17 @@ interface WhiteKeyProps {
   name: string;
   href: string;
   isTopKey?: boolean;
+  isActive?: boolean;
 }
 
 export const WhiteKey = ({
   name = "",
   href = "/",
   isTopKey = false,
+  isActive = false,
 }: WhiteKeyProps) => {
   return (
-    <StyledContainer isTopKey={isTopKey}>
+    <StyledContainer isTopKey={isTopKey} isActive={isActive}>
       <Link href={href}>{name}</Link>
     </StyledContainer>
   );
@@ -23,6 +25,7 @@ export const WhiteKey = ({
 
 interface StyledContainerProps {
   isTopKey?: boolean;
+  isActive?: boolean;
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
@@ -50,6 +53,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
   & > a {
     color: ${theme.white};
     text-decoration: none;
+    filter: ${({ isActive }) =>
+      isActive ? `drop-shadow(0 0.1rem 1rem ${theme.white})` : "none"};
   }
 
   &:hover {
