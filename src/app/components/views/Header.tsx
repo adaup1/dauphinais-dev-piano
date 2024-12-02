@@ -21,12 +21,12 @@ const StyledContainer = styled.div`
   font-size: 4rem;
   font-family: ${() => carattere.style.fontFamily};
 
-  /* background: linear-gradient(
+  background: linear-gradient(
     180deg,
     ${theme.veryDarkGreen} 20%,
     ${theme.veryDarkGreen} 60%,
     transparent 100%
-  ); */
+  );
 `;
 
 const StyledTextContainer = styled.div`
