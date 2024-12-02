@@ -27,7 +27,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
   background: linear-gradient(
     90deg,
     ${theme.darkGreen} 0%,
-    ${theme.black} 100%
+    ${theme.veryDarkGreen} 100%
   );
 
   z-index: 10;

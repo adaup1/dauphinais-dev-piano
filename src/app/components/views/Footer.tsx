@@ -1,34 +1,19 @@
 import { theme } from "@/app/theme/theme";
 import { styled } from "next-yak";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-
-const links = [
-  {
-    icon: faGithub,
-    href: "https://github.com/adaup1",
-    label: "Github",
-  },
-  {
-    icon: faLinkedin,
-    href: "https://www.linkedin.com/in/andrewdauphinais/",
-    label: "LinkedIn",
-  },
-];
+import { links } from "../../data/links";
 
 export const Footer = () => {
   return (
     <StyledFooter>
       {links.map((link) => (
-        <StyledLink href={link.href} target="_blank" key={link.label}>
-          <div>
-            <FontAwesomeIcon
-              icon={link.icon}
-              color={theme.black}
-              height="1.5rem"
-            />
-          </div>
-          <div>{link.label}</div>
+        <StyledLink href={link.href} target="_blank" key={link.name}>
+          <FontAwesomeIcon
+            icon={link.icon}
+            color={theme.black}
+            height="1.5rem"
+          />
+          <div>{link.name}</div>
         </StyledLink>
       ))}
     </StyledFooter>

@@ -15,4 +15,5 @@ const StyledContainer = styled.div`
   border: 1px solid ${theme.white};
   border-radius: 0.2rem;
   padding: 1rem;
+  background-color: ${theme.mediumGreen};
 `;

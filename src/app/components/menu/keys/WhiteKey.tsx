@@ -36,7 +36,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
   background: linear-gradient(
     90deg,
     ${theme.darkGreen} 0%,
-    ${theme.green} 100%
+    ${theme.mediumGreen} 100%
   );
 
   display: flex;
@@ -53,6 +53,10 @@ const StyledContainer = styled.div<StyledContainerProps>`
   }
 
   &:hover {
-    background: linear-gradient(90deg, ${theme.darkGreen} 0%, #113323 100%);
+    background: linear-gradient(
+      90deg,
+      ${theme.darkGreen} 0%,
+      ${theme.green} 100%
+    );
   }
 `;

@@ -6,7 +6,7 @@ export const PaneContainer = ({ children }: { children: React.ReactNode }) => {
 
 const StyledContainer = styled.div`
   display: flex;
-  height: 100%;
+  height: calc(100vh - 12rem);
   width: 100%;
   flex-wrap: nowrap;
 `;
