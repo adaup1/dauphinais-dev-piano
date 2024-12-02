@@ -62,7 +62,7 @@ const StyledContainer = styled.div<ExtraProps>`
   background: linear-gradient(
     90deg,
     ${theme.darkGreen} 0%,
-    ${theme.mediumGreen} 100%
+    ${theme.green} 100%
   );
 
   display: flex;

@@ -29,7 +29,7 @@ const StyledContainer = styled.div`
   border: 1px solid ${theme.white};
   border-radius: 0.2rem;
   padding: 1rem;
-  background-color: ${theme.mediumGreen};
+  background-color: ${theme.green};
   z-index: 1;
 `;
 
@@ -44,10 +44,10 @@ const StyledGradient = styled.div`
   border: 1px solid ${theme.white};
   background: linear-gradient(
     0,
-    ${theme.mediumGreen} 0%,
+    ${theme.green} 0%,
     transparent 5%,
     transparent 95%,
-    ${theme.mediumGreen} 100%
+    ${theme.green} 100%
   );
   pointer-events: none;
 `;
