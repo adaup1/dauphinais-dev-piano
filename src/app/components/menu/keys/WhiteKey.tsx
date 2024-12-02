@@ -1,7 +1,10 @@
+"use client";
+import { useState, useCallback } from "react";
 import { styled } from "next-yak";
 import { theme } from "../../../theme/theme";
 import { carattere } from "../../../theme/fonts";
 import Link from "next/link";
+import { MusicNote } from "./MusicNote";
 
 interface WhiteKeyProps {
   name: string;
@@ -16,9 +19,27 @@ export const WhiteKey = ({
   isTopKey = false,
   isActive = false,
 }: WhiteKeyProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+    setIsHovered(true);
+    setMousePos({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
   return (
-    <StyledContainer isTopKey={isTopKey} isActive={isActive}>
+    <StyledContainer
+      isTopKey={isTopKey}
+      isActive={isActive}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Link href={href}>{name}</Link>
+      {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
     </StyledContainer>
   );
 };

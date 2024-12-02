@@ -1,5 +1,9 @@
+"use client";
+
 import { styled } from "next-yak";
 import { theme } from "../../../theme/theme";
+import { useState, useCallback } from "react";
+import { MusicNote } from "./MusicNote";
 
 type note = "Gb" | "Ab" | "Bb";
 
@@ -8,7 +12,27 @@ interface BlackKeyProps {
 }
 
 export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
-  return <StyledContainer note={note}></StyledContainer>;
+  const [isHovered, setIsHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+    setIsHovered(true);
+    setMousePos({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
+  return (
+    <StyledContainer
+      note={note}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
+    </StyledContainer>
+  );
 };
 
 interface StyledContainerProps {
