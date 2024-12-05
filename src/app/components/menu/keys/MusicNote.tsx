@@ -29,17 +29,17 @@ interface MusicNoteProps {
 export const MusicNote = ({ x, y }: MusicNoteProps) => {
   return (
     <StyledContainer $x={x} $y={y}>
-      <FontAwesomeIcon icon={faMusic} width="1.5rem" color={theme.black} />
+      <FontAwesomeIcon icon={faMusic} width="1.5rem" color={"#222222"} />
     </StyledContainer>
   );
 };
 
 const StyledContainer = styled.div<{ $x: number; $y: number }>`
   position: fixed;
-  z-index: 100;
+  z-index: 20;
   left: ${({ $x }) => $x}px;
   top: ${({ $y }) => $y}px;
   animation: ${fadeOut} 0.5s ease-out forwards, ${float} 0.7s ease-out forwards;
   animation-delay: 0.2s, 0s;
-  filter: drop-shadow(0 0 0.8rem ${theme.white});
+  filter: drop-shadow(0 0 0.3rem ${theme.white});
 `;

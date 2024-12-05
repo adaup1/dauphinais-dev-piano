@@ -56,6 +56,7 @@ export const WhiteKey = ({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
+        <StyledTopGradient />
         <StyledLinkText isActive={isActive}>{name}</StyledLinkText>
         {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
       </StyledContainer>
@@ -71,15 +72,15 @@ const clipPathMap = {
   },
   A: {
     default:
-      "polygon(39% 16%, 39% 0%, 100% 0%, 100% 100%, 39% 100%, 39% 68%, 0 68%, 0 16%)",
+      "polygon(39% 16%, 39% 0%, 100% 0%, 100% 100%, 39% 100%, 39% 68%, 0% 68%, 0% 16%)",
     hover:
-      "polygon(39.7% 16.5%, 39.7% 1%, 99.3% 3%, 99.3% 97%, 39.7% 99%, 39.7% 67.5%, 0 68%, 0 16%)",
+      "polygon(39.7% 16.5%, 39.7% 1%, 99.3% 3%, 99.3% 97%, 39.7% 99%, 39.7% 67.5%, 0% 68%, 0% 16%)",
   },
   G: {
     default:
-      "polygon(39% 30%, 39% 0%, 100% 0%, 100% 100%, 39% 100%, 39% 80%, 0 80%, 0 30%)",
+      "polygon(39% 30%, 39% 0%, 100% 0%, 100% 100%, 39% 100%, 39% 80%, 0% 80%, 0% 30%)",
     hover:
-      "polygon(39.7% 30.5%, 39.7% 1%, 99.3% 3%, 99.3% 97%, 39.7% 99%, 39.7% 79.5%, 0 80%, 0 30%)",
+      "polygon(39.7% 30.5%, 39.7% 1%, 99.3% 3%, 99.3% 97%, 39.7% 99%, 39.7% 79.5%, 0% 80%, 0% 30%)",
   },
   F: {
     default: "polygon(39% 44%, 39% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 44%)",
@@ -91,6 +92,15 @@ const clipPathMap = {
 interface StyledContainerProps {
   note: note;
 }
+
+const StyledTopGradient = styled.div`
+  position: absolute;
+  z-index: 5;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  left: 0;
+`;
 
 const StyledContainer = styled.div<StyledContainerProps>`
   width: 100%;
@@ -112,10 +122,21 @@ const StyledContainer = styled.div<StyledContainerProps>`
 
   &:hover {
     background: linear-gradient(
-      90deg,
-      ${theme.white} 20%,
-      ${theme.fadedWhite} 100%
+      0deg,
+      #b6b6b6 0%,
+      ${theme.white} 18%,
+      ${theme.white} 82%,
+      #b6b6b6 100%
     );
+
+    & ${StyledTopGradient} {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 1) 20%,
+        rgba(210, 210, 210, 0.2) 100%
+      );
+    }
+
     clip-path: ${({ note }) => get(clipPathMap, [note, "hover"], "none")};
   }
 `;
@@ -130,7 +151,8 @@ interface StyledLinkTextProps {
 }
 
 const StyledLinkText = styled.div<StyledLinkTextProps>`
-  color: ${theme.white};
+  color: ${theme.darkGreen};
+  z-index: 7;
   filter: ${({ isActive }) =>
     isActive ? `drop-shadow(0 0.1rem 1rem ${theme.white})` : "none"};
 `;

@@ -30,6 +30,8 @@ export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <StyledOverlayLong />
+      <StyledOverlayShort />
       {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
     </StyledContainer>
   );
@@ -39,22 +41,31 @@ interface StyledContainerProps {
   note: note;
 }
 
+const StyledOverlayLong = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 9;
+  background-color: black;
+  clip-path: polygon(0 0, 92% 12%, 92% 88%, 0% 100%);
+`;
+
+const StyledOverlayShort = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 9;
+  background: linear-gradient(90deg, rgba(7, 20, 14, 1) 88%, #2b2b2b 100%);
+  clip-path: polygon(92% 12%, 100% 0, 100% 100%, 92% 88%);
+`;
+
 const StyledContainer = styled.div<StyledContainerProps>`
   width: calc(100% - 15rem);
   max-width: 50%;
   height: 2.92rem;
-  border-top: 1px solid ${theme.white};
-  border-bottom: 1px solid ${theme.white};
-  border-right: 1px solid ${theme.white};
-  border-radius: 0 0.2rem 0.2rem 0;
-  background-color: ${theme.darkGreen};
-  background: linear-gradient(
-    90deg,
-    ${theme.darkGreen} 0%,
-    ${theme.veryDarkGreen} 100%
-  );
+  background-color: #434343;
 
-  z-index: 10;
+  z-index: 8;
   position: absolute;
   top: ${({ note }) => {
     switch (note) {
@@ -70,4 +81,17 @@ const StyledContainer = styled.div<StyledContainerProps>`
         throw new Error("Invalid note");
     }
   }};
+
+  &:hover {
+    clip-path: polygon(0 0, 100% 2%, 100% 98%, 0% 100%);
+
+    & ${StyledOverlayLong} {
+      clip-path: polygon(0 0, 100% 12%, 100% 88%, 0% 100%);
+    }
+
+    & ${StyledOverlayShort} {
+      clip-path: polygon(95% 12%, 100% 0, 100% 100%, 95% 88%);
+      background: linear-gradient(90deg, rgba(7, 20, 14, 1) 91%, #323232 100%);
+    }
+  }
 `;
