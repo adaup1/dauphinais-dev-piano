@@ -15,12 +15,16 @@ interface WhiteKeyProps {
   name: string;
   href: string;
   note: note;
+  hideTopGradient?: boolean;
+  hideBottomGradient?: boolean;
 }
 
 export const WhiteKey = ({
   name = "",
   href = "/",
   note = "B",
+  hideTopGradient = false,
+  hideBottomGradient = false,
 }: WhiteKeyProps) => {
   const pathname = usePathname();
   const isActive = pathname === href;
@@ -55,8 +59,10 @@ export const WhiteKey = ({
         note={note}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        hideTopGradient={hideTopGradient}
+        hideBottomGradient={hideBottomGradient}
       >
-        <StyledTopGradient />
+        <StyledGradientOverlay />
         <StyledLinkText isActive={isActive}>{name}</StyledLinkText>
         {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
       </StyledContainer>
@@ -91,16 +97,18 @@ const clipPathMap = {
 
 interface StyledContainerProps {
   note: note;
+  hideTopGradient?: boolean;
+  hideBottomGradient?: boolean;
 }
 
-const StyledTopGradient = styled.div`
+const StyledGradientOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: transparent;
-  transition: opacity 200ms ease;
+  transition: opacity 180ms ease;
   opacity: 0;
   z-index: 2;
 
@@ -118,7 +126,7 @@ const StyledTopGradient = styled.div`
     );
     z-index: 5;
     opacity: 0;
-    transition: opacity 200ms ease;
+    transition: opacity 180ms ease;
   }
 `;
 
@@ -128,7 +136,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
   position: relative;
   background: ${theme.white};
   clip-path: ${({ note }) => get(clipPathMap, [note, "default"], "none")};
-  transition: clip-path 150ms ease;
+  transition: clip-path 180ms ease;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
 
@@ -139,15 +147,17 @@ const StyledContainer = styled.div<StyledContainerProps>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      0deg,
-      #b6b6b6 0%,
-      ${theme.white} 18%,
-      ${theme.white} 82%,
-      #b6b6b6 100%
-    );
+    background: ${({ hideTopGradient, hideBottomGradient }) => {
+      if (hideBottomGradient) {
+        return "linear-gradient(0deg, white 0%, white 82%, #b6b6b6 100%)";
+      }
+      if (hideTopGradient) {
+        return "linear-gradient(0deg, #b6b6b6 0%, white 18%, white 100%)";
+      }
+      return "linear-gradient(0deg, #b6b6b6 0%, white 18%, white 82%, #b6b6b6 100%)";
+    }};
     opacity: 0;
-    transition: opacity 200ms ease;
+    transition: opacity 180ms ease;
     z-index: 1;
   }
 
@@ -156,7 +166,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
       opacity: 1;
     }
 
-    ${StyledTopGradient} {
+    ${StyledGradientOverlay} {
       opacity: 1;
 
       &::before {

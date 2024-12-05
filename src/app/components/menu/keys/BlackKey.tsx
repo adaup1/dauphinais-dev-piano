@@ -48,7 +48,7 @@ const StyledOverlayLong = styled.div`
   z-index: 9;
   background-color: black;
   clip-path: polygon(0 0, 92% 12%, 92% 88%, 0% 100%);
-  transition: clip-path 150ms ease;
+  transition: clip-path 120ms ease;
 `;
 
 const StyledOverlayShort = styled.div`
@@ -58,7 +58,7 @@ const StyledOverlayShort = styled.div`
   z-index: 9;
   background: linear-gradient(90deg, rgba(7, 20, 14, 1) 88%, #2b2b2b 100%);
   clip-path: polygon(92% 12%, 100% 0, 100% 100%, 92% 88%);
-  transition: all 150ms ease;
+  transition: all 120ms ease;
 `;
 
 const StyledTopGradient = styled.div`
@@ -68,7 +68,7 @@ const StyledTopGradient = styled.div`
   right: 0;
   bottom: 0;
   background: transparent;
-  transition: opacity 150ms ease;
+  transition: opacity 120ms ease;
   opacity: 0;
   z-index: 10;
 
@@ -86,7 +86,7 @@ const StyledTopGradient = styled.div`
     );
     z-index: 10;
     opacity: 0;
-    transition: opacity 150ms ease;
+    transition: opacity 120ms ease;
   }
 `;
 
