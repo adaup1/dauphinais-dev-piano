@@ -1,34 +1,13 @@
-"use client";
 import { styled } from "next-yak";
 import { WhiteKey, BlackKey } from "./keys";
-import { usePathname } from "next/navigation";
 
 export const Menu = () => {
-  const pathname = usePathname();
-
   return (
     <StyledContainer>
-      <WhiteKey
-        name="About"
-        isTopKey={true}
-        href="/"
-        isActive={pathname === "/"}
-      />
-      <WhiteKey
-        name="Experience"
-        href="/experience"
-        isActive={pathname === "/experience"}
-      />
-      <WhiteKey
-        name="What I'm Building"
-        href="/portfolio"
-        isActive={pathname === "/portfolio"}
-      />
-      <WhiteKey
-        name="Contact"
-        href="/contact"
-        isActive={pathname === "/contact"}
-      />
+      <WhiteKey name="About" href="/" note="B" />
+      <WhiteKey name="Experience" href="/experience" note="A" />
+      <WhiteKey name="What I'm Building" href="/portfolio" note="G" />
+      <WhiteKey name="Contact" href="/contact" note="F" />
       <BlackKey note="Bb" />
       <BlackKey note="Ab" />
       <BlackKey note="Gb" />
