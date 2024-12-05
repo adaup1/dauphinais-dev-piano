@@ -48,6 +48,7 @@ const StyledOverlayLong = styled.div`
   z-index: 9;
   background-color: black;
   clip-path: polygon(0 0, 92% 12%, 92% 88%, 0% 100%);
+  transition: clip-path 150ms ease;
 `;
 
 const StyledOverlayShort = styled.div`
@@ -57,6 +58,36 @@ const StyledOverlayShort = styled.div`
   z-index: 9;
   background: linear-gradient(90deg, rgba(7, 20, 14, 1) 88%, #2b2b2b 100%);
   clip-path: polygon(92% 12%, 100% 0, 100% 100%, 92% 88%);
+  transition: all 150ms ease;
+`;
+
+const StyledTopGradient = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  transition: opacity 150ms ease;
+  opacity: 0;
+  z-index: 10;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 20%,
+      rgba(50, 50, 50, 0.8) 100%
+    );
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
 `;
 
 const StyledContainer = styled.div<StyledContainerProps>`
@@ -84,6 +115,14 @@ const StyledContainer = styled.div<StyledContainerProps>`
 
   &:hover {
     clip-path: polygon(0 0, 100% 2%, 100% 98%, 0% 100%);
+
+    ${StyledTopGradient} {
+      opacity: 1;
+
+      &::before {
+        opacity: 1;
+      }
+    }
 
     & ${StyledOverlayLong} {
       clip-path: polygon(0 0, 100% 12%, 100% 88%, 0% 100%);

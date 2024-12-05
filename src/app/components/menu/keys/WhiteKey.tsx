@@ -95,32 +95,50 @@ interface StyledContainerProps {
 
 const StyledTopGradient = styled.div`
   position: absolute;
-  z-index: 5;
-  background: transparent;
-  width: 100%;
-  height: 100%;
+  top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  transition: opacity 200ms ease;
+  opacity: 0;
+  z-index: 2;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 20%,
+      #bdbdbd22 100%
+    );
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
 `;
 
 const StyledContainer = styled.div<StyledContainerProps>`
   width: 100%;
   height: 5rem;
-  /* border-radius: 0 0.2rem 0.2rem 0; */
+  position: relative;
   background: ${theme.white};
+  clip-path: ${({ note }) => get(clipPathMap, [note, "default"], "none")};
+  transition: clip-path 150ms ease;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
 
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-size: 2rem;
-  padding: 1rem;
-  font-family: ${() => carattere.style.fontFamily};
-  cursor: pointer;
-
-  clip-path: ${({ note }) => get(clipPathMap, [note, "default"], "none")};
-
-  &:hover {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: linear-gradient(
       0deg,
       #b6b6b6 0%,
@@ -128,13 +146,22 @@ const StyledContainer = styled.div<StyledContainerProps>`
       ${theme.white} 82%,
       #b6b6b6 100%
     );
+    opacity: 0;
+    transition: opacity 200ms ease;
+    z-index: 1;
+  }
 
-    & ${StyledTopGradient} {
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 1) 20%,
-        rgba(210, 210, 210, 0.2) 100%
-      );
+  &:hover {
+    &::before {
+      opacity: 1;
+    }
+
+    ${StyledTopGradient} {
+      opacity: 1;
+
+      &::before {
+        opacity: 1;
+      }
     }
 
     clip-path: ${({ note }) => get(clipPathMap, [note, "hover"], "none")};
@@ -152,7 +179,12 @@ interface StyledLinkTextProps {
 
 const StyledLinkText = styled.div<StyledLinkTextProps>`
   color: ${theme.darkGreen};
-  z-index: 7;
+  z-index: 10;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
   filter: ${({ isActive }) =>
     isActive ? `drop-shadow(0 0.1rem 1rem ${theme.white})` : "none"};
 `;
