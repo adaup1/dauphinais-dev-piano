@@ -91,11 +91,12 @@ const StyledTopGradient = styled.div`
 `;
 
 const StyledContainer = styled.div<StyledContainerProps>`
-  width: calc(100% - 15rem);
-  max-width: 50%;
+  /* width: calc(100% - 15rem);
+  max-width: 50%; */
+  width:44.5%;
   height: 2.92rem;
-  background-color: #434343;
-
+  background-color: #5a5a5a;
+  transition: background-color 120ms ease;
   z-index: 8;
   position: absolute;
   top: ${({ note }) => {
@@ -115,6 +116,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
 
   &:hover {
     clip-path: polygon(0 0, 100% 2%, 100% 98%, 0% 100%);
+    background-color: #505050;
+
 
     ${StyledTopGradient} {
       opacity: 1;
