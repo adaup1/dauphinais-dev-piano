@@ -18,7 +18,7 @@ interface StyledContainerProps {
 const StyledContainer = styled.div<StyledContainerProps>`
   padding: 1rem;
   height: 100%;
-  width: 100%;
+  width: fit-content;
   display: flex;
   justify-content: ${({ side }) =>
     side === "left" ? "flex-end" : "flex-start"};
