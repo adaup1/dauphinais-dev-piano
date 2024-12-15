@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { poppins } from "./theme/fonts";
+import { dmSans } from "./theme/fonts";
 import "./globals.css";
 import {
   Pane,
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
+      <body className={`${dmSans.className} antialiased`}>
         <Header />
         <PaneContainer>
           <Pane side="left">

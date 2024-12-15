@@ -93,7 +93,7 @@ const StyledTopGradient = styled.div`
 const StyledContainer = styled.div<StyledContainerProps>`
   /* width: calc(100% - 15rem);
   max-width: 50%; */
-  width:44.5%;
+  width: 40%;
   height: 2.92rem;
   background-color: #5a5a5a;
   transition: background-color 120ms ease;
@@ -117,7 +117,6 @@ const StyledContainer = styled.div<StyledContainerProps>`
   &:hover {
     clip-path: polygon(0 0, 100% 2%, 100% 98%, 0% 100%);
     background-color: #505050;
-
 
     ${StyledTopGradient} {
       opacity: 1;

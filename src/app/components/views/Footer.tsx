@@ -2,6 +2,7 @@ import { theme } from "@/app/theme/theme";
 import { styled } from "next-yak";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { links } from "../../data/links";
+import { kodchasan } from "@/app/theme/fonts";
 
 export const Footer = () => {
   return (
@@ -34,6 +35,7 @@ const StyledLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  /* font-family: ${() => kodchasan.style.fontFamily}; */
   color: ${theme.black};
   font-weight: 600;
   font-size: 1rem;

@@ -2,11 +2,12 @@ import { styled } from "next-yak";
 import { theme } from "./theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { links } from "./data/links";
+import { kodchasan } from "./theme/fonts";
 
 export default function About() {
   return (
     <>
-      <h1>Welcome!</h1>
+      <StyledHeading>Welcome!</StyledHeading>
       <StyledParagraph>
         {`My name is Andrew Dauphinais, but you can call me Andy. I've been programming since 2019 and have been working professionally as a full-stack software engineer since early 2021.`}
       </StyledParagraph>
@@ -34,14 +35,25 @@ export default function About() {
   );
 }
 
+const StyledHeading = styled.h1`
+  font-size: 2rem;
+  font-weight: 500;
+  font-family: ${() => kodchasan.style.fontFamily};
+`;
+
 const StyledParagraph = styled.p`
   font-size: 1rem;
   margin-top: 1.2rem;
 `;
 
 const StyledLink = styled.a`
-  color: ${theme.tan};
+  color: ${theme.silver};
   text-decoration: none;
+  transition: all 120ms ease-in-out;
+
+  &:hover {
+    color: ${theme.black};
+  }
 `;
 
 const StyledSocialLink = styled(StyledLink)`
