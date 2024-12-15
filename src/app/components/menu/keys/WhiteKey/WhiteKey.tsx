@@ -1,13 +1,15 @@
 "use client";
+
 import { useState, useCallback } from "react";
 import { styled } from "next-yak";
-import { theme } from "../../../theme/theme";
-import { carattere } from "../../../theme/fonts";
+import { theme } from "../../../../theme/theme";
+import { kodchasan } from "../../../../theme/fonts";
 import Link from "next/link";
-import { MusicNote } from "./MusicNote";
-import { sampleMap } from "../sampleMap";
+import { MusicNote } from "../MusicNote";
+import { sampleMap } from "../../sampleMap";
 import { usePathname } from "next/navigation";
 import get from "lodash/get";
+import { clipPathMap } from "./clipPathMap";
 
 type note = "F" | "G" | "A" | "B";
 
@@ -37,12 +39,12 @@ export const WhiteKey = ({
       setIsHovered(true);
       setMousePos({ x: e.clientX, y: e.clientY });
       if (!sample) {
-        const audio = new Audio(sampleMap["B"]);
+        const audio = new Audio(sampleMap[note]);
         setSample(audio);
-        // audio.play();
+        audio.play();
       } else {
         sample.currentTime = 0;
-        // sample.play();
+        sample.play();
       }
     },
     [sample]
@@ -63,36 +65,14 @@ export const WhiteKey = ({
         hideBottomGradient={hideBottomGradient}
       >
         <StyledGradientOverlay />
-        <StyledLinkText isActive={isActive}>{name}</StyledLinkText>
+        <StyledLinkText isActive={isActive}>
+          {note}
+          {name}
+        </StyledLinkText>
         {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
       </StyledContainer>
     </StyledLink>
   );
-};
-
-const clipPathMap = {
-  B: {
-    default: "polygon(45% 54%, 45% 100%, 100% 100%, 100% 0%, 0% 0%, 0% 54%)",
-    hover:
-      "polygon(45.7% 53.5%, 45.7% 99%, 99.3% 97%, 99.3% 3%, 0% 0%, 0% 54%)",
-  },
-  A: {
-    default:
-      "polygon(45% 16%, 45% 0%, 100% 0%, 100% 100%, 45% 100%, 45% 68%, 0% 68%, 0% 16%)",
-    hover:
-      "polygon(45.7% 16.5%, 45.7% 1%, 99.3% 3%, 99.3% 97%, 45.7% 99%, 45.7% 67.5%, 0% 68%, 0% 16%)",
-  },
-  G: {
-    default:
-      "polygon(45% 30%, 45% 0%, 100% 0%, 100% 100%, 45% 100%, 45% 80%, 0% 80%, 0% 30%)",
-    hover:
-      "polygon(45.7% 30.5%, 45.7% 1%, 99.3% 3%, 99.3% 97%, 45.7% 99%, 45.7% 79.5%, 0% 80%, 0% 30%)",
-  },
-  F: {
-    default: "polygon(45% 44%, 45% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 44%)",
-    hover:
-      "polygon(45.7% 44.5%, 45.7% 1%, 99.3% 3%, 99.3% 97%, 0% 100%, 0% 44%)",
-  },
 };
 
 interface StyledContainerProps {
@@ -119,11 +99,7 @@ const StyledGradientOverlay = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 1) 20%,
-      #bdbdbd22 100%
-    );
+    background: linear-gradient(90deg, ${theme.white} 20%, #bdbdbd22 100%);
     z-index: 5;
     opacity: 0;
     transition: opacity 180ms ease;
@@ -149,12 +125,12 @@ const StyledContainer = styled.div<StyledContainerProps>`
     bottom: 0;
     background: ${({ hideTopGradient, hideBottomGradient }) => {
       if (hideBottomGradient) {
-        return "linear-gradient(0deg, white 0%, white 82%, #b6b6b6 100%)";
+        return `linear-gradient(0deg, ${theme.white} 0%, ${theme.white} 82%, ${theme.silver} 100%)`;
       }
       if (hideTopGradient) {
-        return "linear-gradient(0deg, #b6b6b6 0%, white 18%, white 100%)";
+        return `linear-gradient(0deg, ${theme.silver} 0%,  18%,  100%)`;
       }
-      return "linear-gradient(0deg, #b6b6b6 0%, white 18%, white 82%, #b6b6b6 100%)";
+      return `linear-gradient(0deg, ${theme.silver} 0%, ${theme.white} 18%, ${theme.white} 82%, ${theme.silver} 100%)`;
     }};
     opacity: 0;
     transition: opacity 180ms ease;
@@ -188,13 +164,14 @@ interface StyledLinkTextProps {
 }
 
 const StyledLinkText = styled.div<StyledLinkTextProps>`
-  color: ${theme.darkGreen};
+  color: ${({ isActive }) => (isActive ? theme.silver : theme.darkBlue)};
   z-index: 10;
   position: absolute;
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  filter: ${({ isActive }) =>
-    isActive ? `drop-shadow(0 0.1rem 1rem ${theme.white})` : "none"};
+  font-family: ${() => kodchasan.style.fontFamily};
+  font-weight: ${({ isActive }) => (isActive ? "700" : "500")};
+  font-size: 1.25rem;
 `;
