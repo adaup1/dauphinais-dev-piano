@@ -5,7 +5,7 @@ import { MenuContextProps } from "./types.d";
 
 export const MenuContext = createContext<MenuContextProps>({
   audioOn: false,
-  setAudioOn: function (audioOn: boolean): void {
+  setAudioOn: function (): void {
     throw new Error("Function not implemented.");
   },
 });

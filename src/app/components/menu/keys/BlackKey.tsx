@@ -57,7 +57,7 @@ export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
         }
       }
     },
-    [audioOn, note]
+    [audioOn, note, sample]
   );
 
   const handleMouseLeave = useCallback(() => {

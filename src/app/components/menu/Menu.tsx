@@ -44,12 +44,12 @@ const StyledMenuContainer = styled.div`
   filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
 `;
 
-const StyledMobileMenuContainer = styled.div`
-  height: 100%;
-  max-height: calc(100vw - 0.5rem);
-  width: 10rem;
-  transform: rotate(90deg);
-`;
+// const StyledMobileMenuContainer = styled.div`
+//   height: 100%;
+//   max-height: calc(100vw - 0.5rem);
+//   width: 10rem;
+//   transform: rotate(90deg);
+// `;
 
 const StyledAudioButtonContainer = styled.div`
   /* margin-top: 1rem; */

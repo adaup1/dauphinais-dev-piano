@@ -75,7 +75,7 @@ export const WhiteKey = ({
         }
       }
     },
-    [audioOn, note]
+    [audioOn, note, sample]
   );
 
   const handleMouseLeave = useCallback(() => {
