@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { styled } from "next-yak";
 import { theme } from "../../../../theme/theme";
 import { kodchasan } from "../../../../theme/fonts";
 import Link from "next/link";
 import { MusicNote } from "../MusicNote";
-import { sampleMap } from "../../sampleMap";
 import { usePathname } from "next/navigation";
 import get from "lodash/get";
 import { clipPathMap } from "./clipPathMap";
-
-type note = "F" | "G" | "A" | "B";
+import { useMenuContext } from "../../context";
+import { sampleMap } from "../sampleMap";
+import { note } from "@/app/types.d";
 
 interface WhiteKeyProps {
   name: string;
@@ -32,27 +32,58 @@ export const WhiteKey = ({
   const isActive = pathname === href;
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const { audioOn } = useMenuContext();
   const [sample, setSample] = useState<HTMLAudioElement | null>(null);
+  const [fadeOutState, setFadeOutState] = useState<{
+    isActive: boolean;
+    startTime: number;
+  }>({ isActive: false, startTime: 0 });
+
+  useEffect(() => {
+    if (!fadeOutState.isActive || !sample) return;
+
+    let currentVolume = sample.volume;
+    const fadeOutInterval = setInterval(() => {
+      currentVolume = Math.max(0, currentVolume - 0.1);
+      sample.volume = currentVolume;
+
+      if (currentVolume <= 0) {
+        clearInterval(fadeOutInterval);
+        sample.pause();
+        setFadeOutState({ isActive: false, startTime: 0 });
+      }
+    }, 30);
+
+    return () => {
+      clearInterval(fadeOutInterval);
+    };
+  }, [fadeOutState.isActive, sample]);
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {
       setIsHovered(true);
       setMousePos({ x: e.clientX, y: e.clientY });
-      if (!sample) {
-        const audio = new Audio(sampleMap[note]);
-        setSample(audio);
-        audio.play();
-      } else {
-        sample.currentTime = 0;
-        sample.play();
+      if (audioOn) {
+        if (!sample) {
+          const audio = new Audio(sampleMap[note]);
+          setSample(audio);
+          audio.play();
+        } else {
+          sample.currentTime = 0;
+          sample.volume = 1;
+          sample.play();
+        }
       }
     },
-    [sample]
+    [audioOn, note]
   );
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-    sample?.pause();
+    if (sample) {
+      const fadeOutStart = Date.now();
+      setFadeOutState({ isActive: true, startTime: fadeOutStart });
+    }
   }, [sample]);
 
   return (
@@ -65,10 +96,7 @@ export const WhiteKey = ({
         hideBottomGradient={hideBottomGradient}
       >
         <StyledGradientOverlay />
-        <StyledLinkText isActive={isActive}>
-          {note}
-          {name}
-        </StyledLinkText>
+        <StyledLinkText isActive={isActive}>{name}</StyledLinkText>
         {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
       </StyledContainer>
     </StyledLink>

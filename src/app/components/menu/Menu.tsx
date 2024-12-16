@@ -1,23 +1,33 @@
+"use client";
+
 import { styled } from "next-yak";
+import { MenuContextProvider } from "./context";
 import { WhiteKey, BlackKey } from "./keys";
-import { AudioButton } from "../audioButton";
+import { AudioButton } from "./audioButton";
 
 export const Menu = () => {
   return (
-    <StyledContainer>
-      <StyledMenuContainer>
-        <WhiteKey name="About" href="/" note="B" hideTopGradient />
-        <WhiteKey name="Experience" href="/experience" note="A" />
-        <WhiteKey name="Portfolio" href="/portfolio" note="G" />
-        <WhiteKey name="Contact" href="/contact" note="F" hideBottomGradient />
-        <BlackKey note="Bb" />
-        <BlackKey note="Ab" />
-        <BlackKey note="Gb" />
-      </StyledMenuContainer>
-      <StyledAudioButtonContainer>
-        <AudioButton />
-      </StyledAudioButtonContainer>
-    </StyledContainer>
+    <MenuContextProvider>
+      <StyledContainer>
+        <StyledMenuContainer>
+          <WhiteKey name="About" href="/" note="B" hideTopGradient />
+          <WhiteKey name="Experience" href="/experience" note="A" />
+          <WhiteKey name="Portfolio" href="/portfolio" note="G" />
+          <WhiteKey
+            name="Contact"
+            href="/contact"
+            note="F"
+            hideBottomGradient
+          />
+          <BlackKey note="Bb" />
+          <BlackKey note="Ab" />
+          <BlackKey note="Gb" />
+        </StyledMenuContainer>
+        <StyledAudioButtonContainer>
+          <AudioButton />
+        </StyledAudioButtonContainer>
+      </StyledContainer>
+    </MenuContextProvider>
   );
 };
 
