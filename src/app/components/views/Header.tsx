@@ -1,5 +1,5 @@
 import { styled } from "next-yak";
-import { carattere, poppins } from "../../theme/fonts";
+import { kodchasan } from "../../theme/fonts";
 import { theme } from "@/app/theme/theme";
 
 export const Header = () => {
@@ -19,18 +19,20 @@ const StyledContainer = styled.div`
   padding-bottom: 3rem;
   margin-bottom: -2rem;
   font-size: 4rem;
-  font-family: ${() => carattere.style.fontFamily};
+  color: ${theme.silver};
+  cursor: default;
+  font-family: ${() => kodchasan.style.fontFamily};
+  filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
 
-  background: linear-gradient(
-    180deg,
-    ${theme.veryDarkGreen} 20%,
-    ${theme.veryDarkGreen} 60%,
-    transparent 100%
-  );
+  @media (max-width: 800px) {
+    font-size: 8vw;
+  }
+  @media (max-width: 400px) {
+    font-size: 2rem;
+  }
 `;
 
 const StyledTextContainer = styled.div`
-  /* filter: drop-shadow(0 0 0.2rem ${theme.white}); */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,5 +41,11 @@ const StyledTextContainer = styled.div`
 
 const StyledSubHeading = styled.div`
   font-size: 1.5rem;
-  font-family: ${() => poppins.style.fontFamily};
+
+  @media (max-width: 800px) {
+    font-size: 3vw;
+  }
+  @media (max-width: 520px) {
+    font-size: 1rem;
+  }
 `;

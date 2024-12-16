@@ -1,44 +1,58 @@
 "use client";
+
 import { styled } from "next-yak";
+import { MenuContextProvider } from "./context";
 import { WhiteKey, BlackKey } from "./keys";
-import { usePathname } from "next/navigation";
+import { AudioButton } from "./audioButton";
 
 export const Menu = () => {
-  const pathname = usePathname();
-
   return (
-    <StyledContainer>
-      <WhiteKey
-        name="About"
-        isTopKey={true}
-        href="/"
-        isActive={pathname === "/"}
-      />
-      <WhiteKey
-        name="Experience"
-        href="/experience"
-        isActive={pathname === "/experience"}
-      />
-      <WhiteKey
-        name="What I'm Building"
-        href="/portfolio"
-        isActive={pathname === "/portfolio"}
-      />
-      <WhiteKey
-        name="Contact"
-        href="/contact"
-        isActive={pathname === "/contact"}
-      />
-      <BlackKey note="Bb" />
-      <BlackKey note="Ab" />
-      <BlackKey note="Gb" />
-    </StyledContainer>
+    <MenuContextProvider>
+      <StyledContainer>
+        <StyledMenuContainer>
+          <WhiteKey name="About" href="/" note="B" hideTopGradient />
+          <WhiteKey name="Experience" href="/experience" note="A" />
+          <WhiteKey name="Portfolio" href="/portfolio" note="G" />
+          <WhiteKey
+            name="Contact"
+            href="/contact"
+            note="F"
+            hideBottomGradient
+          />
+          <BlackKey note="Bb" />
+          <BlackKey note="Ab" />
+          <BlackKey note="Gb" />
+        </StyledMenuContainer>
+        <StyledAudioButtonContainer>
+          <AudioButton />
+        </StyledAudioButtonContainer>
+      </StyledContainer>
+    </MenuContextProvider>
   );
 };
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StyledMenuContainer = styled.div`
   height: fit-content;
-  width: 100%;
-  max-width: 30rem;
+  width: 25vw;
+  max-width: 18rem;
   position: relative;
+  filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
+`;
+
+// const StyledMobileMenuContainer = styled.div`
+//   height: 100%;
+//   max-height: calc(100vw - 0.5rem);
+//   width: 10rem;
+//   transform: rotate(90deg);
+// `;
+
+const StyledAudioButtonContainer = styled.div`
+  /* margin-top: 1rem; */
+  padding: 0.5rem;
+  filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
 `;

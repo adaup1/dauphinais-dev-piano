@@ -1,16 +1,11 @@
-import { Poppins, Parisienne, Carattere } from "next/font/google";
+import { DM_Sans, Kodchasan } from "next/font/google";
 
-export const poppins = Poppins({
+export const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: "400",
 });
 
-export const parisienne = Parisienne({
+export const kodchasan = Kodchasan({
   subsets: ["latin"],
-  weight: "400",
-});
-
-export const carattere = Carattere({
-  subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
 });

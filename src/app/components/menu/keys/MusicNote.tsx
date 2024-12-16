@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { styled, keyframes } from "next-yak";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
@@ -27,10 +28,13 @@ interface MusicNoteProps {
 }
 
 export const MusicNote = ({ x, y }: MusicNoteProps) => {
-  return (
+  if (typeof document === "undefined") return null; // SSR check
+
+  return createPortal(
     <StyledContainer $x={x} $y={y}>
-      <FontAwesomeIcon icon={faMusic} width="1.5rem" color={theme.black} />
-    </StyledContainer>
+      <FontAwesomeIcon icon={faMusic} width="1.5rem" color={"#222222"} />
+    </StyledContainer>,
+    document.body
   );
 };
 
@@ -41,5 +45,5 @@ const StyledContainer = styled.div<{ $x: number; $y: number }>`
   top: ${({ $y }) => $y}px;
   animation: ${fadeOut} 0.5s ease-out forwards, ${float} 0.7s ease-out forwards;
   animation-delay: 0.2s, 0s;
-  filter: drop-shadow(0 0 0.8rem ${theme.white});
+  filter: drop-shadow(0 0 0.3rem ${theme.white});
 `;
