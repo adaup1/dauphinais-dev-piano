@@ -15,9 +15,9 @@ export const Menu = () => {
         <StyledMobileMenuContainer>
           <Keyboard />
         </StyledMobileMenuContainer>
-        {/* <StyledAudioButtonContainer>
+        <StyledAudioButtonContainer>
           <AudioButton />
-        </StyledAudioButtonContainer> */}
+        </StyledAudioButtonContainer>
       </StyledContainer>
     </MenuContextProvider>
   );

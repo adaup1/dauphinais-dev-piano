@@ -5,7 +5,6 @@ import {
   Pane,
   PaneContainer,
   Header,
-  Container,
   Footer,
 } from "./components/views";
 import { Menu } from "./components/menu";

@@ -57,7 +57,7 @@ export default function Experience() {
   );
 }
 
-const StyledContainer = styled.div``;
+// const StyledContainer = styled.div``;
 
 const StyledImage = styled.img`
   width: 20rem;
@@ -99,16 +99,16 @@ const StyledParagraph = styled.p`
   font-size: 1rem;
 `;
 
-const StyledLink = styled.a`
-  color: ${theme.silver};
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 120ms ease-in-out;
+// const StyledLink = styled.a`
+//   color: ${theme.silver};
+//   font-weight: 700;
+//   text-decoration: none;
+//   transition: all 120ms ease-in-out;
 
-  &:hover {
-    color: ${theme.black};
-  }
-`;
+//   &:hover {
+//     color: ${theme.black};
+//   }
+// `;
 
 const StyledLabel = styled.label`
   font-family: ${() => kodchasan.style.fontFamily};
