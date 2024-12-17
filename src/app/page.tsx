@@ -3,10 +3,11 @@ import { theme } from "./theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { links } from "./data/links";
 import { kodchasan } from "./theme/fonts";
+import { Container } from "./components/views/Container";
 
 export default function About() {
   return (
-    <>
+    <Container>
       <StyledHeading>Welcome!</StyledHeading>
       <StyledParagraph>
         {`My name is Andrew Dauphinais, but you can call me Andy. I've been programming since 2019 and have been working professionally as a full-stack software engineer since early 2021.`}
@@ -27,11 +28,11 @@ export default function About() {
       </StyledParagraph>
       {links.map((link) => (
         <StyledSocialLink href={link.href} target="_blank" key={link.name}>
-          <FontAwesomeIcon icon={link.icon} height="2rem" />
+          <FontAwesomeIcon icon={link.icon} height="1.5rem" />
           <div>{link.heading}</div>
         </StyledSocialLink>
       ))}
-    </>
+    </Container>
   );
 }
 
@@ -60,6 +61,6 @@ const StyledSocialLink = styled(StyledLink)`
   display: flex;
   font-size: 1.5rem;
   align-items: center;
-  gap: 1rem;
+  gap: 0.6rem;
   margin-top: 1.2rem;
 `;

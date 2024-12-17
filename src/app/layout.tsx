@@ -28,9 +28,7 @@ export default function RootLayout({
           <Pane side="left">
             <Menu />
           </Pane>
-          <Pane side="right">
-            <Container>{children}</Container>
-          </Pane>
+          <Pane side="right">{children}</Pane>
         </PaneContainer>
         <Footer />
       </body>

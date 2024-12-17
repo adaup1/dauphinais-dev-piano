@@ -2,7 +2,7 @@
 
 import { styled } from "next-yak";
 import { MenuContextProvider } from "./context";
-import { WhiteKey, BlackKey } from "./keys";
+import { Keyboard } from "./Keyboard";
 import { AudioButton } from "./audioButton";
 
 export const Menu = () => {
@@ -10,31 +10,18 @@ export const Menu = () => {
     <MenuContextProvider>
       <StyledContainer>
         <StyledMenuContainer>
-          <WhiteKey name="About" href="/" note="B" hideTopGradient />
-          <WhiteKey name="Experience" href="/experience" note="A" />
-          <WhiteKey name="Portfolio" href="/portfolio" note="G" />
-          <WhiteKey
-            name="Contact"
-            href="/contact"
-            note="F"
-            hideBottomGradient
-          />
-          <BlackKey note="Bb" />
-          <BlackKey note="Ab" />
-          <BlackKey note="Gb" />
+          <Keyboard />
         </StyledMenuContainer>
-        <StyledAudioButtonContainer>
+        <StyledMobileMenuContainer>
+          <Keyboard />
+        </StyledMobileMenuContainer>
+        {/* <StyledAudioButtonContainer>
           <AudioButton />
-        </StyledAudioButtonContainer>
+        </StyledAudioButtonContainer> */}
       </StyledContainer>
     </MenuContextProvider>
   );
 };
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 const StyledMenuContainer = styled.div`
   height: fit-content;
@@ -44,15 +31,35 @@ const StyledMenuContainer = styled.div`
   filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
 `;
 
-// const StyledMobileMenuContainer = styled.div`
-//   height: 100%;
-//   max-height: calc(100vw - 0.5rem);
-//   width: 10rem;
-//   transform: rotate(90deg);
-// `;
+const StyledMobileMenuContainer = styled.div`
+  height: 100%;
+  max-height: calc(100vw - 0.5rem);
+  width: 10rem;
+  transform: rotate(90deg);
+  display: none;
+`;
 
 const StyledAudioButtonContainer = styled.div`
   /* margin-top: 1rem; */
   padding: 0.5rem;
   filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
+`;
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 800px) {
+    position: absolute;
+    height: 10rem;
+    top: 0%;
+    left: 50%;
+
+    ${StyledMenuContainer} {
+      display: none;
+    }
+    ${StyledMobileMenuContainer} {
+      display: block;
+    }
+  }
 `;
