@@ -24,6 +24,7 @@ const StyledMobileContainer = styled.div`
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
+  position: relative;
 `;
 
 const StyledContainer = styled.div`

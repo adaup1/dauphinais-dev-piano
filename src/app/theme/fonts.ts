@@ -2,7 +2,7 @@ import { DM_Sans, Kodchasan } from "next/font/google";
 
 export const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const kodchasan = Kodchasan({
