@@ -14,8 +14,10 @@ interface BlackKeyProps {
 export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const { audioOn } = useMenuContext();
+  const { audioOn, audioContext } = useMenuContext();
   const [sample, setSample] = useState<HTMLAudioElement | null>(null);
+  const [audioSource, setAudioSource] =
+    useState<MediaElementAudioSourceNode | null>(null);
   const [fadeOutState, setFadeOutState] = useState<{
     isActive: boolean;
     startTime: number;
@@ -45,10 +47,15 @@ export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
     (e: React.MouseEvent) => {
       setIsHovered(true);
       setMousePos({ x: e.clientX, y: e.clientY });
-      if (audioOn) {
+      if (audioOn && audioContext) {
         if (!sample) {
           const audio = new Audio(sampleMap[note]);
           setSample(audio);
+
+          const source = audioContext.createMediaElementSource(audio);
+          source.connect(audioContext.destination);
+          setAudioSource(source);
+
           audio.play();
         } else {
           sample.currentTime = 0;
@@ -57,7 +64,7 @@ export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
         }
       }
     },
-    [audioOn, note, sample]
+    [audioOn, audioContext, note, sample]
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -67,6 +74,14 @@ export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
       setFadeOutState({ isActive: true, startTime: fadeOutStart });
     }
   }, [sample]);
+
+  useEffect(() => {
+    return () => {
+      if (audioSource) {
+        audioSource.disconnect();
+      }
+    };
+  }, [audioSource]);
 
   return (
     <StyledContainer

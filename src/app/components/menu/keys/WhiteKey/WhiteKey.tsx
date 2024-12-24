@@ -32,12 +32,14 @@ export const WhiteKey = ({
   const isActive = pathname === href;
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const { audioOn } = useMenuContext();
+  const { audioOn, audioContext } = useMenuContext();
   const [sample, setSample] = useState<HTMLAudioElement | null>(null);
   const [fadeOutState, setFadeOutState] = useState<{
     isActive: boolean;
     startTime: number;
   }>({ isActive: false, startTime: 0 });
+  const [audioSource, setAudioSource] =
+    useState<MediaElementAudioSourceNode | null>(null);
 
   useEffect(() => {
     if (!fadeOutState.isActive || !sample) return;
@@ -63,10 +65,15 @@ export const WhiteKey = ({
     (e: React.MouseEvent) => {
       setIsHovered(true);
       setMousePos({ x: e.clientX, y: e.clientY });
-      if (audioOn) {
+      if (audioOn && audioContext) {
         if (!sample) {
           const audio = new Audio(sampleMap[note]);
           setSample(audio);
+
+          const source = audioContext.createMediaElementSource(audio);
+          source.connect(audioContext.destination);
+          setAudioSource(source);
+
           audio.play();
         } else {
           sample.currentTime = 0;
@@ -75,7 +82,7 @@ export const WhiteKey = ({
         }
       }
     },
-    [audioOn, note, sample]
+    [audioOn, note, sample, audioContext]
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -85,6 +92,14 @@ export const WhiteKey = ({
       setFadeOutState({ isActive: true, startTime: fadeOutStart });
     }
   }, [sample]);
+
+  useEffect(() => {
+    return () => {
+      if (audioSource) {
+        audioSource.disconnect();
+      }
+    };
+  }, [audioSource]);
 
   return (
     <StyledLink href={href}>
