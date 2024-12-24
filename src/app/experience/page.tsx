@@ -2,14 +2,24 @@ import { styled } from "next-yak";
 import { Container } from "../components/views/Container";
 import { theme } from "../theme/theme";
 import { kodchasan } from "@/app/theme/fonts";
+import { konverseBullets } from "./experienceBullets";
+
+const KONVERSE_TECHNOLOGIES = [
+  "React",
+  "Typescript",
+  "Apollo GraphQL",
+  "PHP",
+  "MySQL",
+  "ElasticSearch",
+  "Docker",
+  "RabbitMQ",
+  "AWS",
+];
 
 export default function Experience() {
   return (
     <Container>
-      <StyledTitle>
-        Full Stack Software Engineer @
-        {/* <StyledLink href="https://konverse.com/">Konverse</StyledLink> */}
-      </StyledTitle>
+      <StyledTitle>Full Stack Software Engineer @</StyledTitle>
       <StyledFlexContainer>
         <a href="https://konverse.com/" target="_blank">
           <StyledImage src="/images/konverse-logo.png" alt="Koverse Logo" />
@@ -21,15 +31,11 @@ export default function Experience() {
           <StyledSpan>{`Some of our technologies include:`}</StyledSpan>
         </StyledParagraph>
         <StyledList>
-          <StyledListItem>React</StyledListItem>
-          <StyledListItem>Typescript</StyledListItem>
-          <StyledListItem>Apollo GraphQL</StyledListItem>
-          <StyledListItem>PHP</StyledListItem>
-          <StyledListItem>MySQL</StyledListItem>
-          <StyledListItem>ElasticSearch</StyledListItem>
-          <StyledListItem>Docker</StyledListItem>
-          <StyledListItem>RabbitMQ</StyledListItem>
-          <StyledListItem>AWS</StyledListItem>
+          {KONVERSE_TECHNOLOGIES.map((technology) => (
+            <StyledTechListItem key={technology}>
+              {technology}
+            </StyledTechListItem>
+          ))}
         </StyledList>
         <StyledParagraph>
           <StyledSpan>AND MORE!</StyledSpan>
@@ -52,12 +58,21 @@ export default function Experience() {
           Your browser does not support the video tag.
         </StyledVideo>
       </VideoWrapper>
-      <StyledParagraph>Here is my experience</StyledParagraph>
+      <StyledIntroWrapper>
+        <StyledInnerLabelContainer>
+          <StyledLabel>Some of my contributions include:</StyledLabel>
+        </StyledInnerLabelContainer>
+        <StyledList>
+          {konverseBullets.map((bullet) => (
+            <StyledExperienceListitem key={bullet}>
+              {bullet}
+            </StyledExperienceListitem>
+          ))}
+        </StyledList>
+      </StyledIntroWrapper>
     </Container>
   );
 }
-
-// const StyledContainer = styled.div``;
 
 const StyledImage = styled.img`
   width: 20rem;
@@ -70,6 +85,7 @@ const VideoWrapper = styled.div`
   width: 100%;
   position: relative;
   padding-top: 56.25%; // 16:9 aspect ratio (9 / 16 = 0.5625)
+  margin-bottom: 1rem;
 `;
 
 const StyledVideo = styled.video`
@@ -97,18 +113,8 @@ const StyledFlexContainer = styled.div`
 const StyledParagraph = styled.p`
   width: 100%;
   font-size: 1rem;
+  text-align: center;
 `;
-
-// const StyledLink = styled.a`
-//   color: ${theme.silver};
-//   font-weight: 700;
-//   text-decoration: none;
-//   transition: all 120ms ease-in-out;
-
-//   &:hover {
-//     color: ${theme.black};
-//   }
-// `;
 
 const StyledLabel = styled.label`
   font-family: ${() => kodchasan.style.fontFamily};
@@ -126,11 +132,24 @@ const StyledList = styled.ul`
   margin: 1rem 0;
 `;
 
-const StyledListItem = styled.li`
+const StyledTechListItem = styled.li`
   background-color: ${theme.blue};
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   font-size: 0.9rem;
+`;
+
+const StyledExperienceListitem = styled.li`
+  display: flex;
+  padding-left: 1.5rem;
+  position: relative;
+
+  &:before {
+    content: "\2605";
+    position: absolute;
+    left: 0;
+    margin-right: 0.5rem;
+  }
 `;
 
 const StyledSpan = styled.span`
@@ -141,5 +160,9 @@ const StyledIntroWrapper = styled.div`
   padding: 1rem;
   background-color: ${theme.darkBlue};
   border-radius: 0.25rem;
-  /* border: 1px solid ${theme.white}; */
+`;
+
+const StyledInnerLabelContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;

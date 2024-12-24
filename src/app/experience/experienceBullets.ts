@@ -1,0 +1,6 @@
+export const konverseBullets = [
+    `Contributed major functionality to Group Sync using ElasticSearch. Group Sync is relied upon by almost every Konverse Client, including Hyatt, Aramark, Follett, RE/MAX, Berkshire Hathway, Sotheby’s and hundreds more. The group sync runs hourly on AWS EventBridge but can also be run manually. Groups bundle an unlimited number of users based on a variety of user attributes, allowing app admins to easily give thousands of users access to different parts of the app at once.`,
+    `Introduced the Collections Editor; a tool used by Aramark, Follett, and many real-estate customers. Collections allow clients to group any routes in the app into a singular view for easy access with many customization options such as the ability to drag and drop items in any order using Material UI. Collections can also be created through a PHP REST API, which some clients opt to do.`,
+    `Built features utilizing Google Cloud APIs such as an address form field that uses the Google Maps API and Google Places Autocomplete, as well as a plugin that leverages the Google Translate API to translate any post content in the application.`,
+    `Created the Language Admin, using MUI Datagrid and optimistic responses with GraphQL. The Language Admin allows clients to dynamically change text throughout the application.`,
+]
