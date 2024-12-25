@@ -12,6 +12,7 @@ import { clipPathMap } from "./clipPathMap";
 import { useMenuContext } from "../../context";
 import { sampleMap } from "../sampleMap";
 import { note } from "@/app/types.d";
+import { useAudioManager } from "../hooks/useAudioManager";
 
 interface WhiteKeyProps {
   name: string;
@@ -36,79 +37,25 @@ export const WhiteKey = ({
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const { audioOn, audioContext, tunaReverb } = useMenuContext();
-  const [sample, setSample] = useState<HTMLAudioElement | null>(null);
-  const [audioSource, setAudioSource] =
-    useState<MediaElementAudioSourceNode | null>(null);
-  const [gainNode, setGainNode] = useState<GainNode | null>(null);
+  const { playNote, stopNote } = useAudioManager(audioContext, tunaReverb);
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {
       setIsHovered(true);
       setMousePos({ x: e.clientX, y: e.clientY });
-      if (audioOn && audioContext && tunaReverb) {
-        if (!sample) {
-          const audio = new Audio(sampleMap[note]);
-          audio.volume = 0.7;
-          setSample(audio);
-
-          const gain = audioContext.createGain();
-          // Start at 0 and ramp up
-          gain.gain.setValueAtTime(0, audioContext.currentTime);
-          gain.gain.linearRampToValueAtTime(
-            0.7,
-            audioContext.currentTime + FADE_IN_TIME
-          );
-          setGainNode(gain);
-
-          const source = audioContext.createMediaElementSource(audio);
-          source.connect(gain);
-          gain.connect(tunaReverb);
-          tunaReverb.connect(audioContext.destination);
-          setAudioSource(source);
-
-          audio.play();
-        } else {
-          sample.currentTime = 0;
-          if (gainNode) {
-            const now = audioContext.currentTime;
-            gainNode.gain.cancelScheduledValues(now);
-            gainNode.gain.setValueAtTime(0, now);
-            gainNode.gain.linearRampToValueAtTime(0.7, now + FADE_IN_TIME);
-          }
-          sample.play();
-        }
+      if (audioOn) {
+        playNote(note);
       }
     },
-    [audioOn, audioContext, tunaReverb, note, sample, gainNode]
+    [audioOn, note, playNote]
   );
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-    if (gainNode && audioContext && sample) {
-      const now = audioContext.currentTime;
-      gainNode.gain.cancelScheduledValues(now);
-      gainNode.gain.setValueAtTime(gainNode.gain.value, now);
-      gainNode.gain.linearRampToValueAtTime(0, now + FADE_OUT_TIME);
-
-      // Stop the sample after fade out
-      setTimeout(() => {
-        sample.pause();
-        // Reset gain for next play
-        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-      }, FADE_OUT_TIME * 1000 + 10); // Adjusted timeout to match longer fade
+    if (audioOn) {
+      stopNote(note);
     }
-  }, [gainNode, audioContext, sample]);
-
-  useEffect(() => {
-    return () => {
-      if (gainNode) {
-        gainNode.disconnect();
-      }
-      if (audioSource) {
-        audioSource.disconnect();
-      }
-    };
-  }, [gainNode, audioSource]);
+  }, [audioOn, note, stopNote]);
 
   return (
     <StyledLink href={href}>
