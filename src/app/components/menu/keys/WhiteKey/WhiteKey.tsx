@@ -21,6 +21,9 @@ interface WhiteKeyProps {
   hideBottomGradient?: boolean;
 }
 
+const FADE_IN_TIME = 0.015;
+const FADE_OUT_TIME = 0.3;
+
 export const WhiteKey = ({
   name = "",
   href = "/",
@@ -32,74 +35,80 @@ export const WhiteKey = ({
   const isActive = pathname === href;
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const { audioOn, audioContext } = useMenuContext();
+  const { audioOn, audioContext, tunaReverb } = useMenuContext();
   const [sample, setSample] = useState<HTMLAudioElement | null>(null);
-  const [fadeOutState, setFadeOutState] = useState<{
-    isActive: boolean;
-    startTime: number;
-  }>({ isActive: false, startTime: 0 });
   const [audioSource, setAudioSource] =
     useState<MediaElementAudioSourceNode | null>(null);
-
-  useEffect(() => {
-    if (!fadeOutState.isActive || !sample) return;
-
-    let currentVolume = sample.volume;
-    const fadeOutInterval = setInterval(() => {
-      currentVolume = Math.max(0, currentVolume - 0.1);
-      sample.volume = currentVolume;
-
-      if (currentVolume <= 0) {
-        clearInterval(fadeOutInterval);
-        sample.pause();
-        setFadeOutState({ isActive: false, startTime: 0 });
-      }
-    }, 30);
-
-    return () => {
-      clearInterval(fadeOutInterval);
-    };
-  }, [fadeOutState.isActive, sample]);
+  const [gainNode, setGainNode] = useState<GainNode | null>(null);
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {
       setIsHovered(true);
       setMousePos({ x: e.clientX, y: e.clientY });
-      if (audioOn && audioContext) {
+      if (audioOn && audioContext && tunaReverb) {
         if (!sample) {
           const audio = new Audio(sampleMap[note]);
+          audio.volume = 0.7;
           setSample(audio);
 
+          const gain = audioContext.createGain();
+          // Start at 0 and ramp up
+          gain.gain.setValueAtTime(0, audioContext.currentTime);
+          gain.gain.linearRampToValueAtTime(
+            0.7,
+            audioContext.currentTime + FADE_IN_TIME
+          );
+          setGainNode(gain);
+
           const source = audioContext.createMediaElementSource(audio);
-          source.connect(audioContext.destination);
+          source.connect(gain);
+          gain.connect(tunaReverb);
+          tunaReverb.connect(audioContext.destination);
           setAudioSource(source);
 
           audio.play();
         } else {
           sample.currentTime = 0;
-          sample.volume = 1;
+          if (gainNode) {
+            const now = audioContext.currentTime;
+            gainNode.gain.cancelScheduledValues(now);
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.7, now + FADE_IN_TIME);
+          }
           sample.play();
         }
       }
     },
-    [audioOn, note, sample, audioContext]
+    [audioOn, audioContext, tunaReverb, note, sample, gainNode]
   );
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-    if (sample) {
-      const fadeOutStart = Date.now();
-      setFadeOutState({ isActive: true, startTime: fadeOutStart });
+    if (gainNode && audioContext && sample) {
+      const now = audioContext.currentTime;
+      gainNode.gain.cancelScheduledValues(now);
+      gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+      gainNode.gain.linearRampToValueAtTime(0, now + FADE_OUT_TIME);
+
+      // Stop the sample after fade out
+      setTimeout(() => {
+        sample.pause();
+        // Reset gain for next play
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      }, FADE_OUT_TIME * 1000 + 10); // Adjusted timeout to match longer fade
     }
-  }, [sample]);
+  }, [gainNode, audioContext, sample]);
 
   useEffect(() => {
     return () => {
+      if (gainNode) {
+        gainNode.disconnect();
+      }
       if (audioSource) {
         audioSource.disconnect();
       }
     };
-  }, [audioSource]);
+  }, [gainNode, audioSource]);
 
   return (
     <StyledLink href={href}>
