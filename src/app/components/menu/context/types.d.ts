@@ -1,6 +1,5 @@
 export interface MenuContextProps {
   audioOn: boolean;
-  audioContext: AudioContext | null;
-  tunaReverb: any | null;
+  isInitialized: boolean;
   setAudioOn: (audioOn: boolean) => void;
 }
