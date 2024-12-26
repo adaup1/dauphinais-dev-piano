@@ -12,7 +12,7 @@ interface AudioNodes {
 export const useAudioManager = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const reverbRef = useRef<any>(null);
+  const reverbRef = useRef<unknown>(null);
   const audioNodesRef = useRef<Record<note, AudioNodes>>(
     {} as Record<note, AudioNodes>
   );
@@ -27,7 +27,8 @@ export const useAudioManager = () => {
     try {
       // Create audio context
       const context = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext)();
       audioContextRef.current = context;
 
       // Create Tuna and reverb
@@ -37,7 +38,7 @@ export const useAudioManager = () => {
         lowCut: 20,
         dryLevel: 0.4,
         wetLevel: 0.6,
-        level: 0.5,
+        level: 0.3,
         impulse: "samples/reverb.wav",
         bypass: false,
       });
@@ -156,16 +157,25 @@ export const useAudioManager = () => {
       const context = audioContextRef.current;
 
       const now = context.currentTime;
+      const fadeEndTime = now + fadeOutTime;
+
+      // Schedule the fade out
       gain.gain.cancelScheduledValues(now);
       gain.gain.setValueAtTime(gain.gain.value, now);
-      gain.gain.linearRampToValueAtTime(0, now + fadeOutTime);
+      gain.gain.linearRampToValueAtTime(0, fadeEndTime);
 
-      // Schedule the stop
+      // Calculate precise timeout based on AudioContext time
+      const msUntilFadeComplete = (fadeEndTime - now) * 1000;
+
+      // Schedule the stop to occur exactly when fade completes
       const timeoutId = window.setTimeout(() => {
-        audio.pause();
-        gain.gain.setValueAtTime(0, context.currentTime);
+        // Double check that we're actually at zero before stopping
+        if (gain.gain.value <= 0.01) {
+          audio.pause();
+          gain.gain.setValueAtTime(0, context.currentTime);
+        }
         delete scheduledStopsRef.current[noteKey];
-      }, fadeOutTime * 1000 + 10);
+      }, msUntilFadeComplete + 20); // Small buffer for safety
 
       scheduledStopsRef.current[noteKey] = timeoutId;
     },

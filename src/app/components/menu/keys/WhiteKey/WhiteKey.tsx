@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { styled } from "next-yak";
 import { theme } from "../../../../theme/theme";
 import { kodchasan } from "../../../../theme/fonts";
@@ -10,7 +10,6 @@ import { usePathname } from "next/navigation";
 import get from "lodash/get";
 import { clipPathMap } from "./clipPathMap";
 import { useMenuContext } from "../../context";
-import { sampleMap } from "../sampleMap";
 import { note } from "@/app/types.d";
 import { useAudioManager } from "../hooks/useAudioManager";
 
@@ -21,9 +20,6 @@ interface WhiteKeyProps {
   hideTopGradient?: boolean;
   hideBottomGradient?: boolean;
 }
-
-const FADE_IN_TIME = 0.015;
-const FADE_OUT_TIME = 0.3;
 
 export const WhiteKey = ({
   name = "",
@@ -36,8 +32,8 @@ export const WhiteKey = ({
   const isActive = pathname === href;
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const { audioOn, audioContext, tunaReverb } = useMenuContext();
-  const { playNote, stopNote } = useAudioManager(audioContext, tunaReverb);
+  const { audioOn } = useMenuContext();
+  const { playNote, stopNote } = useAudioManager();
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {

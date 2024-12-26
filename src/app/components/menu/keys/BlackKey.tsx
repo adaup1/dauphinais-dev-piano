@@ -14,8 +14,8 @@ interface BlackKeyProps {
 export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const { audioOn, audioContext, tunaReverb } = useMenuContext();
-  const { playNote, stopNote } = useAudioManager(audioContext, tunaReverb);
+  const { audioOn } = useMenuContext();
+  const { playNote, stopNote } = useAudioManager();
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {
