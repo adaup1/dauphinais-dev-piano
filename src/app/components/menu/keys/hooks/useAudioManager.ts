@@ -7,6 +7,7 @@ interface AudioNodes {
   source: MediaElementAudioSourceNode;
   gain: GainNode;
   audio: HTMLAudioElement;
+  compressor: DynamicsCompressorNode;
 }
 
 export const useAudioManager = () => {
@@ -34,10 +35,10 @@ export const useAudioManager = () => {
       // Create Tuna and reverb
       const tuna = new Tuna(context);
       const reverb = new tuna.Convolver({
-        highCut: 22050,
-        lowCut: 20,
-        dryLevel: 0.4,
-        wetLevel: 0.6,
+        highCut: 16000,
+        lowCut: 80,
+        dryLevel: 0.2,
+        wetLevel: 0.8,
         level: 0.3,
         impulse: "samples/reverb.wav",
         bypass: false,
@@ -55,9 +56,18 @@ export const useAudioManager = () => {
           const gain = context.createGain();
           gain.gain.setValueAtTime(0, context.currentTime);
 
+          // Create compressor
+          const compressor = context.createDynamicsCompressor();
+          compressor.threshold.setValueAtTime(-24, context.currentTime);
+          compressor.knee.setValueAtTime(12, context.currentTime);
+          compressor.ratio.setValueAtTime(4, context.currentTime);
+          compressor.attack.setValueAtTime(0.003, context.currentTime);
+          compressor.release.setValueAtTime(0.25, context.currentTime);
+
           // Connect nodes
           source.connect(gain);
-          gain.connect(reverb);
+          gain.connect(compressor);
+          compressor.connect(reverb);
           reverb.connect(context.destination);
 
           // Store nodes
@@ -65,6 +75,7 @@ export const useAudioManager = () => {
             source,
             gain,
             audio,
+            compressor,
           };
 
           // Wait for audio to load
@@ -134,7 +145,7 @@ export const useAudioManager = () => {
       const now = context.currentTime;
       gain.gain.cancelScheduledValues(now);
       gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.7, now + fadeInTime);
+      gain.gain.linearRampToValueAtTime(0.5, now + fadeInTime);
 
       const playPromise = audio.play();
       if (playPromise) {
