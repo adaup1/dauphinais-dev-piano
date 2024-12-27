@@ -1,11 +1,11 @@
 "use client";
 
 import { styled } from "next-yak";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { MusicNote } from "./MusicNote";
 import { useMenuContext } from "../context";
-import { sampleMap } from "./sampleMap";
 import { note } from "@/app/types.d";
+import { useAudioManager } from "./hooks/useAudioManager";
 
 interface BlackKeyProps {
   note: note;
@@ -15,58 +15,25 @@ export const BlackKey = ({ note = "Bb" }: BlackKeyProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const { audioOn } = useMenuContext();
-  const [sample, setSample] = useState<HTMLAudioElement | null>(null);
-  const [fadeOutState, setFadeOutState] = useState<{
-    isActive: boolean;
-    startTime: number;
-  }>({ isActive: false, startTime: 0 });
-
-  useEffect(() => {
-    if (!fadeOutState.isActive || !sample) return;
-
-    let currentVolume = sample.volume;
-    const fadeOutInterval = setInterval(() => {
-      currentVolume = Math.max(0, currentVolume - 0.1);
-      sample.volume = currentVolume;
-
-      if (currentVolume <= 0) {
-        clearInterval(fadeOutInterval);
-        sample.pause();
-        setFadeOutState({ isActive: false, startTime: 0 });
-      }
-    }, 30);
-
-    return () => {
-      clearInterval(fadeOutInterval);
-    };
-  }, [fadeOutState.isActive, sample]);
+  const { playNote, stopNote } = useAudioManager();
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {
       setIsHovered(true);
       setMousePos({ x: e.clientX, y: e.clientY });
       if (audioOn) {
-        if (!sample) {
-          const audio = new Audio(sampleMap[note]);
-          setSample(audio);
-          audio.play();
-        } else {
-          sample.currentTime = 0;
-          sample.volume = 1;
-          sample.play();
-        }
+        playNote(note);
       }
     },
-    [audioOn, note, sample]
+    [audioOn, note, playNote]
   );
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-    if (sample) {
-      const fadeOutStart = Date.now();
-      setFadeOutState({ isActive: true, startTime: fadeOutStart });
+    if (audioOn) {
+      stopNote(note);
     }
-  }, [sample]);
+  }, [audioOn, note, stopNote]);
 
   return (
     <StyledContainer
@@ -135,8 +102,6 @@ const StyledTopGradient = styled.div`
 `;
 
 const StyledContainer = styled.div<StyledContainerProps>`
-  /* width: calc(100% - 15rem);
-  max-width: 50%; */
   width: 40%;
   height: 2.92rem;
   background-color: #5a5a5a;
@@ -151,8 +116,6 @@ const StyledContainer = styled.div<StyledContainerProps>`
         return "14.48rem";
       case "Ab":
         return "8.76rem";
-      case "Gb":
-        return "14.6rem";
       default:
         throw new Error("Invalid note");
     }
