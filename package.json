@@ -17,7 +17,8 @@
     "next": "15.0.4-canary.33",
     "next-yak": "3",
     "react": "19.0.0-rc-b01722d5-20241114",
-    "react-dom": "19.0.0-rc-b01722d5-20241114"
+    "react-dom": "19.0.0-rc-b01722d5-20241114",
+    "tunajs": "^1.0.15"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.13",
