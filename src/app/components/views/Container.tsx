@@ -24,13 +24,17 @@ const StyledWrapper = styled.div`
     max-width: 100%;
     margin: 1rem;
 
-    height: calc(100vh - 8rem);
+    height: fit-content;
+    min-height: 20rem;
+    max-height: calc(100vh - 13rem);
+    // For Mobile Safari
+    max-height: calc(-webkit-fill-available - 13rem);
   }
 `;
 
 const StyledContainer = styled.div`
   height: 100%;
-  max-height: fit-content;
+  max-height: inherit;
   overflow-y: auto;
   width: 100%;
   position: relative;
