@@ -16,8 +16,16 @@ const StyledWrapper = styled.div`
   position: relative;
   width: 50vw;
   max-width: 36rem;
-  height: calc(100vh - 14rem);
+  height: calc(100vh - 15rem);
   max-height: fit-content;
+
+  @media (max-width: 800px) {
+    width: 100vw;
+    max-width: 100%;
+    margin: 1rem;
+
+    height: calc(100vh - 8rem);
+  }
 `;
 
 const StyledContainer = styled.div`

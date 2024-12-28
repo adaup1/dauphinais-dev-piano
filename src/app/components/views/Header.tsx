@@ -17,7 +17,7 @@ const StyledContainer = styled.div`
   width: 100%;
   padding-top: 1rem;
   padding-bottom: 3rem;
-  margin-bottom: -2rem;
+  margin-bottom: -1rem;
   font-size: 4rem;
   color: ${theme.silver};
   cursor: default;
@@ -25,6 +25,7 @@ const StyledContainer = styled.div`
   filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
 
   @media (max-width: 800px) {
+    display: none;
     font-size: 8vw;
   }
   @media (max-width: 400px) {
