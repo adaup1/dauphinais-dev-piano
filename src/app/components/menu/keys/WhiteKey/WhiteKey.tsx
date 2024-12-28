@@ -36,7 +36,7 @@ export const WhiteKey = ({
   const isActive = pathname === href;
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const { audioOn } = useMenuContext();
+  const { audioOn, setIsMobileMenuOpen } = useMenuContext();
   const { playNote, stopNote } = useAudioManager();
 
   const isMobile = useMediaQuery({ query: "(max-width: 800px)" });
@@ -65,7 +65,7 @@ export const WhiteKey = ({
   }, [audioOn, note, stopNote]);
 
   return (
-    <StyledLink href={href}>
+    <StyledLink href={href} onClick={() => setIsMobileMenuOpen(false)}>
       <StyledContainer
         note={note}
         onMouseEnter={handleMouseEnter}
@@ -86,7 +86,7 @@ interface StyledContainerProps {
   note: note;
   hideTopGradient?: boolean;
   hideBottomGradient?: boolean;
-  clipPathMap: any;
+  clipPathMap: typeof mobileClipPathMap | typeof desktopClipPathMap;
 }
 
 const StyledGradientOverlay = styled.div`
