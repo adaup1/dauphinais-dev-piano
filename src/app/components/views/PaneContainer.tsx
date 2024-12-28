@@ -1,10 +1,27 @@
 import { styled } from "next-yak";
+import { Pane } from "./Pane";
+import { Menu } from "../menu";
+
+const Panes = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      <Pane side="left">
+        <Menu />
+      </Pane>
+      <Pane side="right">{children}</Pane>
+    </>
+  );
+};
 
 export const PaneContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <StyledContainer>
-      <StyledDesktopContainer>{children}</StyledDesktopContainer>
-      <StyledMobileContainer>{children}</StyledMobileContainer>
+      <StyledDesktopContainer>
+        <Panes>{children}</Panes>
+      </StyledDesktopContainer>
+      <StyledMobileContainer>
+        <Panes>{children}</Panes>
+      </StyledMobileContainer>
     </StyledContainer>
   );
 };
@@ -15,16 +32,18 @@ const StyledDesktopContainer = styled.div`
   width: 100%;
   justify-content: center;
   flex-wrap: nowrap;
+  overflow: hidden;
+  gap: 2rem;
 `;
 
 const StyledMobileContainer = styled.div`
   display: none;
   height: 100%;
   width: 100%;
-  flex-direction: column;
+  /* flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  position: relative;
+  position: relative; */
 `;
 
 const StyledContainer = styled.div`
@@ -33,7 +52,7 @@ const StyledContainer = styled.div`
       display: none;
     }
     ${StyledMobileContainer} {
-      display: flex;
+      display: block;
     }
   }
 `;

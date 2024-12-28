@@ -7,7 +7,11 @@ import { useAudioManager } from "../keys/hooks/useAudioManager";
 export const MenuContext = createContext<MenuContextProps>({
   audioOn: false,
   isInitialized: false,
+  isMobileMenuOpen: false,
   setAudioOn: () => {
+    throw new Error("Function not implemented.");
+  },
+  setIsMobileMenuOpen: () => {
     throw new Error("Function not implemented.");
   },
 });
@@ -18,6 +22,7 @@ export const MenuContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [audioOn, setAudioOn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isInitialized, initializeAudio, cleanup } = useAudioManager();
 
   const handleSetAudioOn = useCallback(
@@ -37,7 +42,9 @@ export const MenuContextProvider = ({
       value={{
         audioOn,
         isInitialized,
+        isMobileMenuOpen,
         setAudioOn: handleSetAudioOn,
+        setIsMobileMenuOpen,
       }}
     >
       {children}

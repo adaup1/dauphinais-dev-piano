@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { styled } from "next-yak";
 import { theme } from "../../../../theme/theme";
 import { kodchasan } from "../../../../theme/fonts";
@@ -8,10 +8,14 @@ import Link from "next/link";
 import { MusicNote } from "../MusicNote";
 import { usePathname } from "next/navigation";
 import get from "lodash/get";
-import { clipPathMap } from "./clipPathMap";
+import {
+  clipPathMap as desktopClipPathMap,
+  mobileClipPathMap,
+} from "./clipPathMap";
 import { useMenuContext } from "../../context";
 import { note } from "@/app/types.d";
 import { useAudioManager } from "../hooks/useAudioManager";
+import { useMediaQuery } from "react-responsive";
 
 interface WhiteKeyProps {
   name: string;
@@ -32,8 +36,15 @@ export const WhiteKey = ({
   const isActive = pathname === href;
   const [isHovered, setIsHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const { audioOn } = useMenuContext();
+  const { audioOn, setIsMobileMenuOpen } = useMenuContext();
   const { playNote, stopNote } = useAudioManager();
+
+  const isMobile = useMediaQuery({ query: "(max-width: 800px)" });
+
+  const clipPathMap = useMemo(
+    () => (isMobile ? mobileClipPathMap : desktopClipPathMap),
+    [isMobile]
+  );
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent) => {
@@ -54,13 +65,14 @@ export const WhiteKey = ({
   }, [audioOn, note, stopNote]);
 
   return (
-    <StyledLink href={href}>
+    <StyledLink href={href} onClick={() => setIsMobileMenuOpen(false)}>
       <StyledContainer
         note={note}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         hideTopGradient={hideTopGradient}
         hideBottomGradient={hideBottomGradient}
+        clipPathMap={clipPathMap}
       >
         <StyledGradientOverlay />
         <StyledLinkText isActive={isActive}>{name}</StyledLinkText>
@@ -74,6 +86,7 @@ interface StyledContainerProps {
   note: note;
   hideTopGradient?: boolean;
   hideBottomGradient?: boolean;
+  clipPathMap: typeof mobileClipPathMap | typeof desktopClipPathMap;
 }
 
 const StyledGradientOverlay = styled.div`
@@ -106,7 +119,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
   height: 5rem;
   position: relative;
   background: ${theme.white};
-  clip-path: ${({ note }) => get(clipPathMap, [note, "default"], "none")};
+  clip-path: ${({ note, clipPathMap }) =>
+    get(clipPathMap, [note, "default"], "none")};
   transition: clip-path 180ms ease;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
@@ -145,7 +159,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
       }
     }
 
-    clip-path: ${({ note }) => get(clipPathMap, [note, "hover"], "none")};
+    clip-path: ${({ note, clipPathMap }) =>
+      get(clipPathMap, [note, "hover"], "none")};
   }
 `;
 

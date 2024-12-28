@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import { dmSans } from "./theme/fonts";
 import "./globals.css";
-import {
-  Pane,
-  PaneContainer,
-  Header,
-  Footer,
-} from "./components/views";
-import { Menu } from "./components/menu";
+import { PaneContainer, Header, Footer } from "./components/views";
 
 export const metadata: Metadata = {
   title: "Dauphinais.dev",
@@ -23,12 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${dmSans.className} antialiased`}>
         <Header />
-        <PaneContainer>
-          <Pane side="left">
-            <Menu />
-          </Pane>
-          <Pane side="right">{children}</Pane>
-        </PaneContainer>
+        <PaneContainer>{children}</PaneContainer>
         <Footer />
       </body>
     </html>
