@@ -8,7 +8,6 @@ import { theme } from "../../theme/theme";
 import { kodchasan } from "@/app/theme/fonts";
 import { Keyboard } from "./Keyboard";
 import { useMenuContext } from "./context";
-import { AudioButton } from "./audioButton/AudioButton";
 
 export const MobileMenu = () => {
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useMenuContext();
@@ -28,16 +27,9 @@ export const MobileMenu = () => {
         <StyledFontAwesomeIcon icon={icon} />
       </StyledButton>
       <StyledTitle>Andrew Dauphinais</StyledTitle>
-      {isMobileMenuOpen && (
-        <StyledAudioButtonContainer>
-          <AudioButton isMobile={true} />
-        </StyledAudioButtonContainer>
-      )}
-      {isMobileMenuOpen && (
-        <StyledMobileKeyboardContainer>
-          <Keyboard />
-        </StyledMobileKeyboardContainer>
-      )}
+      <StyledMobileKeyboardContainer $isOpen={isMobileMenuOpen}>
+        <Keyboard />
+      </StyledMobileKeyboardContainer>
     </StyledMobileMenuContainer>
   );
 };
@@ -64,7 +56,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   height: 2rem;
 `;
 
-const StyledMobileKeyboardContainer = styled.div`
+const StyledMobileKeyboardContainer = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   top: 3rem;
   left: 0%;
@@ -73,6 +65,11 @@ const StyledMobileKeyboardContainer = styled.div`
   z-index: 1000;
   background-color: ${theme.darkBlue};
   filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
+
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  opacity: ${(props) => (props.$isOpen ? 1 : 0)};
+  transform: translateY(${(props) => (props.$isOpen ? "0" : "-1rem")});
+  pointer-events: ${(props) => (props.$isOpen ? "auto" : "none")};
 `;
 
 const StyledTitle = styled.div`
@@ -83,10 +80,4 @@ const StyledTitle = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-`;
-
-const StyledAudioButtonContainer = styled.div`
-  position: absolute;
-  right: 0.5rem;
-  top: 25%;
 `;
