@@ -8,7 +8,8 @@ import { FormData } from "./types.d";
 import { styled, keyframes } from "next-yak";
 import { theme } from "../theme/theme";
 import { kodchasan } from "../theme/fonts";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { PortalModal } from "../components/modals/PortalModal";
 
 const bounce = keyframes`
   0%, 100% {
@@ -55,17 +56,9 @@ const Contact = () => {
       </p>
       <br />
       <AnimatePresence>
-        {isSubmitted && (
-          <StyledModal
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <StyledSuccessMessage>
-              Thank you! Your message has been sent successfully.
-            </StyledSuccessMessage>
-          </StyledModal>
-        )}
+        <PortalModal isOpen={isSubmitted}>
+          Thank you! Your message has been successfully sent.
+        </PortalModal>
       </AnimatePresence>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledFormGroup>
@@ -209,24 +202,6 @@ const StyledHeading = styled.h1`
   color: ${theme.white};
   text-align: center;
   margin-bottom: 1.5rem;
-`;
-
-const StyledModal = styled(motion.div)`
-  position: fixed;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-`;
-
-const StyledSuccessMessage = styled.div`
-  background-color: ${theme.darkBlue};
-  color: ${theme.white};
-  padding: 1rem 2rem;
-  border-radius: 0.25rem;
-  text-align: center;
-  border: 2px solid ${theme.silver};
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledLoader = styled.div`
