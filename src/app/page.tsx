@@ -17,12 +17,12 @@ export default function About() {
       </StyledParagraph>
       <StyledParagraph>
         {`Feel free to peruse my website. You can read about my work experience and check out what I'm currently building in my spare time, like `}
-        <StyledLink href="https://windycivi.com/" target="_blank">
-          Windy Civi
-        </StyledLink>{" "}
-        {` and `}
         <StyledLink href="https://typingclassics.com/" target="_blank">
           Typing Classics
+        </StyledLink>
+        {` and `}
+        <StyledLink href="https://windycivi.com/" target="_blank">
+          Windy Civi
         </StyledLink>
         {`!`}
       </StyledParagraph>

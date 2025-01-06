@@ -44,6 +44,10 @@ const StyledContainer = styled.div`
   z-index: 1;
 
   filter: drop-shadow(0.5rem 0.5rem 0.5rem black);
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 `;
 
 const StyledGradient = styled.div`
