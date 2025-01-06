@@ -67,15 +67,15 @@ export const WhiteKey = ({
   return (
     <StyledLink href={href} onClick={() => setIsMobileMenuOpen(false)}>
       <StyledContainer
-        note={note}
+        $note={note}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        hideTopGradient={hideTopGradient}
-        hideBottomGradient={hideBottomGradient}
-        clipPathMap={clipPathMap}
+        $hideTopGradient={hideTopGradient}
+        $hideBottomGradient={hideBottomGradient}
+        $clipPathMap={clipPathMap}
       >
         <StyledGradientOverlay />
-        <StyledLinkText isActive={isActive}>{name}</StyledLinkText>
+        <StyledLinkText $isActive={isActive}>{name}</StyledLinkText>
         {isHovered && <MusicNote x={mousePos.x} y={mousePos.y} />}
       </StyledContainer>
     </StyledLink>
@@ -83,10 +83,10 @@ export const WhiteKey = ({
 };
 
 interface StyledContainerProps {
-  note: note;
-  hideTopGradient?: boolean;
-  hideBottomGradient?: boolean;
-  clipPathMap: typeof mobileClipPathMap | typeof desktopClipPathMap;
+  $note: note;
+  $hideTopGradient?: boolean;
+  $hideBottomGradient?: boolean;
+  $clipPathMap: typeof mobileClipPathMap | typeof desktopClipPathMap;
 }
 
 const StyledGradientOverlay = styled.div`
@@ -119,8 +119,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
   height: 5rem;
   position: relative;
   background: ${theme.white};
-  clip-path: ${({ note, clipPathMap }) =>
-    get(clipPathMap, [note, "default"], "none")};
+  clip-path: ${({ $note, $clipPathMap }) =>
+    get($clipPathMap, [$note, "default"], "none")};
   transition: clip-path 180ms ease;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
@@ -132,11 +132,11 @@ const StyledContainer = styled.div<StyledContainerProps>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: ${({ hideTopGradient, hideBottomGradient }) => {
-      if (hideBottomGradient) {
+    background: ${({ $hideTopGradient, $hideBottomGradient }) => {
+      if ($hideBottomGradient) {
         return `linear-gradient(0deg, ${theme.white} 0%, ${theme.white} 82%, ${theme.silver} 100%)`;
       }
-      if (hideTopGradient) {
+      if ($hideTopGradient) {
         return `linear-gradient(0deg, ${theme.silver} 0%,  18%,  100%)`;
       }
       return `linear-gradient(0deg, ${theme.silver} 0%, ${theme.white} 18%, ${theme.white} 82%, ${theme.silver} 100%)`;
@@ -159,8 +159,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
       }
     }
 
-    clip-path: ${({ note, clipPathMap }) =>
-      get(clipPathMap, [note, "hover"], "none")};
+    clip-path: ${({ $note, $clipPathMap }) =>
+      get($clipPathMap, [$note, "hover"], "none")};
   }
 `;
 
@@ -170,11 +170,11 @@ const StyledLink = styled(Link)`
 `;
 
 interface StyledLinkTextProps {
-  isActive: boolean;
+  $isActive: boolean;
 }
 
 const StyledLinkText = styled.div<StyledLinkTextProps>`
-  color: ${({ isActive }) => (isActive ? theme.silver : theme.darkBlue)};
+  color: ${({ $isActive }) => ($isActive ? theme.silver : theme.darkBlue)};
   z-index: 10;
   position: absolute;
   right: 1rem;
@@ -182,6 +182,6 @@ const StyledLinkText = styled.div<StyledLinkTextProps>`
   transform: translateY(-50%);
   pointer-events: none;
   font-family: ${() => kodchasan.style.fontFamily};
-  font-weight: ${({ isActive }) => (isActive ? "700" : "500")};
+  font-weight: ${({ $isActive }) => ($isActive ? "700" : "500")};
   font-size: 1.25rem;
 `;
