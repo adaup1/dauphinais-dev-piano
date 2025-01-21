@@ -106,7 +106,7 @@ export default function Experience() {
     <Container>
       {experienceValues.map((experience, index) => (
         <StyledContainer
-          padded={index !== experienceValues.length - 1}
+          $padded={index !== experienceValues.length - 1}
           key={experience.company}
         >
           <ExperienceTemplate {...experience} />
@@ -117,11 +117,11 @@ export default function Experience() {
 }
 
 interface StyledContainerProps {
-  padded?: boolean;
+  $padded?: boolean;
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
-  margin-bottom: ${({ padded }) => (padded ? "1rem" : "0")};
+  margin-bottom: ${({ $padded }) => ($padded ? "1rem" : "0")};
 `;
 
 const StyledImage = styled.img`
