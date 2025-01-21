@@ -13,10 +13,17 @@ export const GridContainer = ({ children }: { children: React.ReactNode }) => {
 
 const StyledWrapper = styled.div`
   position: relative;
-  width: calc(25vw - 0.5rem);
+  width: calc(100% - 1.5rem);
   max-width: calc(18rem - 0.5rem);
   height: calc(100vh - 14rem);
   max-height: fit-content;
+
+   @media (max-width: 800px) {
+    width: 100%;
+    max-width: unset;
+    height: unset;
+  }
+
 `;
 
 const StyledContainer = styled.div`
